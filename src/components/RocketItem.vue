@@ -12,22 +12,13 @@
 import { useQuery } from '@vue/apollo-composable';
 import { computed } from '@vue/reactivity';
 import { useRoute } from 'vue-router'
-import gql from 'graphql-tag';
+import { GET_ROCKET } from '@/queries';
 
 export default {
   setup() {
     const route = useRoute()
     const { result, loading, error } = useQuery(
-      gql`
-        query getRocket($id: ID!) {
-          rocket(id: $id) {
-            id
-            name
-            description
-            costPerLaunch: cost_per_launch
-          }
-        }
-      `,
+      GET_ROCKET,
       {
         id: route.params.id,
       }

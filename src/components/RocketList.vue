@@ -12,19 +12,12 @@
 
 <script>
 import { useQuery } from '@vue/apollo-composable';
-import gql from 'graphql-tag';
 import { computed } from 'vue';
+import { GET_ROCKETS } from '@/queries'
 
 export default {
   setup() {
-    const { result, loading, error } = useQuery(gql`
-      query getRockets {
-        rockets {
-          id
-          name
-        }
-      }
-    `);
+    const { result, loading, error } = useQuery(GET_ROCKETS);
 
     const rockets = computed(() => result.value?.rockets ?? []);
 
