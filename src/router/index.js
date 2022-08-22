@@ -17,6 +17,12 @@ const routes = [
     name: 'rocket',
     component: () => import(/* webpackChunkName: "about" */ '../views/RocketView.vue')
   }
+  ,
+  {
+    path: '/users',
+    name: 'users',
+    component: () => import(/* webpackChunkName: "about" */ '../views/UsersView.vue')
+  }
 ]
 
 const router = createRouter({
