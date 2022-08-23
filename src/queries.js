@@ -19,3 +19,14 @@ export const GET_ROCKET = gql`
     }
   }
 `;
+
+export const GET_USERS = gql`
+  query getUsers {
+    users(limit: 10, order_by: { timestamp: desc }) {
+      id
+      name
+      twitter
+      rocket
+    }
+  }
+`
