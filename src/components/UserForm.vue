@@ -1,8 +1,13 @@
 <template>
   <form @submit.prevent="submit">
     <fieldset>
-      <input type="text" placeholder="Name" v-model="name" required />
-      <input type="text" placeholder="Twitter" v-model="twitter" required />
+      <input type="text" placeholder="Name" v-model.trim="name" required />
+      <input
+        type="text"
+        placeholder="Twitter"
+        v-model.trim="twitter"
+        required
+      />
       <select v-model="rocket" required>
         <option :selected="true" :value="null">Choose Rocket</option>
         <option
@@ -30,7 +35,7 @@ export default {
     const name = ref('');
     const twitter = ref('');
     const rocket = ref('');
-    const { mutate } = useMutation(INSERT_USER, () => {
+    const { mutate, onDone, onError } = useMutation(INSERT_USER, () => {
       const id = uuidv4();
 
       return {
@@ -70,11 +75,20 @@ export default {
     });
 
     const submit = () => {
-      mutate();
+      if (name.value && twitter.value && rocket.value) {
+        mutate();
+      }
+    };
+
+    onError((error) => {
+      alert(error);
+    });
+
+    onDone(() => {
       name.value = '';
       twitter.value = '';
       rocket.value = '';
-    };
+    });
 
     return {
       submit,
