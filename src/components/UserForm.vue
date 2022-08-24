@@ -32,8 +32,8 @@ export default {
     const rocket = ref('');
     const { mutate } = useMutation(INSERT_USER, {
       // refetchQueries: ['getUsers'],
-      update: (cache, { data: { insert_users } }) => {
-        const [newUser] = insert_users.returning;
+      update: (cache, { data: { insertUsers } }) => {
+        const [newUser] = insertUsers.returning;
         let data = cache.readQuery({
           query: GET_USERS,
         });
@@ -53,6 +53,9 @@ export default {
         twitter: twitter.value,
         rocket: rocket.value,
       });
+      name.value = '';
+      twitter.value = '';
+      rocket.value = '';
     };
 
     return {

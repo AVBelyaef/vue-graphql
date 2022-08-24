@@ -1,13 +1,13 @@
 import gql from 'graphql-tag';
 
 export const INSERT_USER = gql`
-  mutation insertUser(
+  mutation InsertUser(
     $id: uuid!
     $name: String!
     $twitter: String!
     $rocket: String!
   ) {
-    insert_users(
+    insertUsers(
       objects: { id: $id, name: $name, twitter: $twitter, rocket: $rocket }
     ) {
       returning {
