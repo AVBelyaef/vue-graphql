@@ -7,7 +7,7 @@ export const INSERT_USER = gql`
     $twitter: String!
     $rocket: String!
   ) {
-    insertUsers(
+    insert_users(
       objects: { id: $id, name: $name, twitter: $twitter, rocket: $rocket }
     ) {
       returning {

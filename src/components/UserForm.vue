@@ -30,29 +30,47 @@ export default {
     const name = ref('');
     const twitter = ref('');
     const rocket = ref('');
-    const { mutate } = useMutation(INSERT_USER, {
-      // refetchQueries: ['getUsers'],
-      update: (cache, { data: { insertUsers } }) => {
-        const [newUser] = insertUsers.returning;
-        let data = cache.readQuery({
-          query: GET_USERS,
-        });
-        data = { ...data, users: [newUser, ...data.users] };
-        cache.writeQuery({
-          query: GET_USERS,
-          data,
-        });
-      },
+    const { mutate } = useMutation(INSERT_USER, () => {
+      const id = uuidv4();
+
+      return {
+        variables: {
+          id,
+          name: name.value,
+          twitter: twitter.value,
+          rocket: rocket.value,
+        },
+        update: (cache, { data: { insert_users } }) => {
+          const [newUser] = insert_users.returning;
+          let data = cache.readQuery({
+            query: GET_USERS,
+          });
+          data = { ...data, users: [newUser, ...data.users] };
+          cache.writeQuery({
+            query: GET_USERS,
+            data,
+          });
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          insert_users: {
+            __typename: 'users_mutation_response',
+            returning: [
+              {
+                __typename: 'users',
+                id: -1,
+                name: name.value,
+                twitter: twitter.value,
+                rocket: rocket.value,
+              },
+            ],
+          },
+        },
+      };
     });
 
     const submit = () => {
-      const id = uuidv4();
-      mutate({
-        id: id,
-        name: name.value,
-        twitter: twitter.value,
-        rocket: rocket.value,
-      });
+      mutate();
       name.value = '';
       twitter.value = '';
       rocket.value = '';
